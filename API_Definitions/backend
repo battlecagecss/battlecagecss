@@ -1,0 +1,33 @@
+Express routes: 
+ - / 
+        Serve the static files and create a new websocket connection
+
+- /:room (React router, if used)
+        Goes directly to a socket room, but serves the static files also
+
+- /:room/site
+        Serves the current saved version of the changing site
+
+Socket.IO messages:
+
+Player {
+    playerID: string,
+    socketID: string,
+    wins: number,
+    pictureURL: string,
+}
+
+Node {
+    nodeID: string,
+    attribute: string,
+    attributeValue: string
+}
+
+- "timer" : {timeRemaining: number} update the timestamp on all pages
+- "getPlayers": {players: [Player]} get all the current players in this room
+- "submitVote": submit a player's vote (should include the playerID as to not duplicate votes)
+- "votes" {votes: number}: returns current votes for player 1 and 2
+- "submitChange": {change: Node} player submitting the change for the specified node
+- "playerCSSChanges": {player1: {player: Player, change: Node}, player2: {player: Player, change: Node}} changes for player 1 and 2, submitted to the front end to show the changes for voting
+- "playerWin": {player: Player} updates a player (needed for wins/tokens)
+- "changeTurn": {player1: {player: Player}, player2: {player: Player}} picks two new players
