@@ -1,0 +1,32 @@
+{
+  "name": "battlecagecss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Svansig/battlecagecss.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Svansig/battlecagecss/issues"
+  },
+  "homepage": "https://github.com/Svansig/battlecagecss#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "enzyme": "^3.11.0",
+    "jest": "^26.3.0",
+    "nodemon": "^2.0.4",
+    "puppeteer": "^5.2.1"
+  }
+}

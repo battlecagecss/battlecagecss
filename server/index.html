@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket test page</title>
+  </head>
+  <body>
+    <h1>Socket test page!</h1>
+    <div id="inner"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('welcome', () => console.log('connected to socket'));
+      socket.on('pageInfo', (html) => {
+        // console.log(html);
+        document.getElementById('inner').innerHTML = html;
+      });
+    </script>
+  </body>
+</html>
