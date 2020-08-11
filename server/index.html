@@ -12,6 +12,8 @@
     <script>
       var socket = io();
       socket.on('welcome', () => console.log('connected to socket'));
+      socket.emit('joinRoom', window.location.pathname.split('/')[2])
+      socket.on('joinedRoom', console.log)
       socket.on('pageInfo', (html) => {
         // console.log(html);
         document.getElementById('inner').innerHTML = html;
