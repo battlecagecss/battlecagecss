@@ -24,10 +24,19 @@ Node {
 }
 
 - "timer" : {timeRemaining: number} update the timestamp on all pages
-- "getPlayers": {players: [Player]} get all the current players in this room
+        updateTimer
+        setCountdown
+        runCountdown
+        timeUp
+- "getPlayers": {players: [Player]} get all the current players in this room 
+        addPlayer
+        removePlayer
+        updatePlayerList
 - "submitVote": submit a player's vote (should include the playerID as to not duplicate votes)
-- "votes" {votes: number}: returns current votes for player 1 and 2
-- "submitChange": {change: Node} player submitting the change for the specified node
-- "playerCSSChanges": {player1: {player: Player, change: Node}, player2: {player: Player, change: Node}} changes for player 1 and 2, submitted to the front end to show the changes for voting
-- "playerWin": {player: Player} updates a player (needed for wins/tokens)
-- "changeTurn": {player1: {player: Player}, player2: {player: Player}} picks two new players
+        tallyVotes - "votes" {votes: number}: returns current votes for player 1 and 2
+        updatedVotes
+        resetVotes
+        submitChange - "submitChange": {change: Node} player submitting the change for the specified node
+        returnChanges - "playerCSSChanges": {player1: {player: Player, change: Node}, player2: {player: Player, change: Node}} changes for player 1 and 2, submitted to the front end to show the changes for voting
+- () - "playerWin": {player: Player} updates a player (needed for wins/tokens)
+- () - "changeTurn": {player1: {player: Player}, player2: {player: Player}} picks two new players
