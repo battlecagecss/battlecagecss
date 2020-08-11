@@ -17,13 +17,13 @@ describe('GET /', () => {
 //- /:room/site
 //  Serves the current saved version of the changing site
 
-describe('GET /:room', () => {
+describe('GET /room/:room', () => {
+	// first the client goes to a route, which should return the index.html
 	let room = 123;
 	it('should serve static files', () => {
-		return supertest(http).get(`/${room}`).expect(200).expect('Content-Type', 'text/html; charset=UTF-8');
+		return supertest(http).get(`/room/${room}`).expect(200).expect('Content-Type', 'text/html; charset=UTF-8');
 	});
-
-	it('should direct to a socket room', () => {});
 });
+// client should send a joinRoom message through the socket, which should join the socket to a room
 
 xdescribe('GET /:room/site', () => {});

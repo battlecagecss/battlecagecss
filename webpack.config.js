@@ -14,6 +14,15 @@ module.exports = {
 	output,
 	devtool: 'eval-source-map',
 	// mode: 'development',
+	// devServer: {
+	//   publicPath: 'http://localhost:8080/build/',
+	//   proxy: {
+	//     '/api': {
+	//       target: 'http://localhost:3000/'
+	//     }
+	//   },
+	//   hot: true,'
+	// },
 	module: {
 		rules: [
 			{
