@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-// //need to also import wrapper
+import React, { Component } from 'react';
+import Wrapper from './containers/MainContainer.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>hello</h1>
+        <Wrapper />
       </div>
     );
   }
