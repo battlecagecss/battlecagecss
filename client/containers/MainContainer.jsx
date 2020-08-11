@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TotalsDisplay from '../components/TotalsDisplay.jsx';
+import DisplayContainer from './DisplayContainer.jsx';
 import { addVote, deleteVote } from '../actions/actions.js';
 
 const mapStateToProps = (state) => ({
@@ -33,6 +34,7 @@ class MainContainer extends Component {
       <div className="container">
         <div className="outerBox">
           <h1 id="header">CSS CAGEMATCH</h1>
+          <DisplayContainer />
           <TotalsDisplay />
           <button name="addVote" onClick={this.handleClick}>
             +
