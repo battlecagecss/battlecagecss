@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+    - 14
+
+before_install:
+    - "echo 'Starting Installation....'"
+
+install:
+    - "npm install"
+
+script:
+    - "npm test"
+
+after_success:
+    - "echo 'Testing successful!'"
