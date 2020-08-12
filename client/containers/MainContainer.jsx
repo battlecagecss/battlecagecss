@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import TotalsDisplay from '../components/TotalsDisplay.jsx';
-import DisplayContainer from './DisplayContainer.jsx';
-import { addVote, deleteVote } from '../actions/actions.js';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+//import TotalsDisplay from '../components/TotalsDisplay.jsx';
+import NameForm from "../components/NameForm.jsx";
+import Menu from "../components/Menu.jsx";
+import DisplayContainer from "./DisplayContainer.jsx";
+import { addVote, deleteVote } from "../actions/actions.js";
 
 const mapStateToProps = (state) => ({
   //
@@ -22,9 +24,9 @@ class MainContainer extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    if (e.target.name === 'addVote') {
+    if (e.target.name === "addVote") {
       this.props.addVote();
-    } else if (e.target.name === 'deleteVote') {
+    } else if (e.target.name === "deleteVote") {
       this.props.deleteVote();
     }
   }
@@ -35,14 +37,8 @@ class MainContainer extends Component {
         <div className="outerBox">
           <h1 id="header">CSS CAGEMATCH</h1>
           <DisplayContainer />
-          <TotalsDisplay />
-          <button name="addVote" onClick={this.handleClick}>
-            +
-          </button>
-          <button name="deleteVote" onClick={this.handleClick}>
-            -
-          </button>
-          <h1>hello</h1>
+          <Menu style={{color: "red"}}/>
+          <NameForm style={{color: "red"}}/>
         </div>
       </div>
     );
