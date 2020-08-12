@@ -7,7 +7,7 @@ const io = require('socket.io')(http);
 const { createPlayer } = require('./socketMessages');
 
 app.use(express.json());
-app.use(express.static('assets'));
+app.use(express.static('dist'));
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.html'));
@@ -29,5 +29,17 @@ io.on('connect', (socket) => {
 	});
 });
 
-// 	socket.emit('welcome');
+io.on('connection', (socket) => {
+	console.log('a user connected at socket');
+	socket.emit('welcome');
+	fetch('https://developer.mozilla.org/en-US/')
+		.then((x) => x.text())
+		.then((string) => string.replace(/\/static/g, 'https://developer.mozilla.org/static'))
+		.then((data) => {
+			// console.log(data);
+			return data;
+		})
+		.then((resp) => socket.emit('pageInfo', resp));
+});
+
 module.exports = http;
