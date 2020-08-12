@@ -119,10 +119,12 @@ class Timer {
 	updateTimer() {
 		this.io.to(this.room).emit('timer', { timeRemaining: this.time });
 	}
+
 	setCountdown(time, cb) {
 		this.time = time;
 		this.cb = cb;
 	}
+
 	runCountdown() {
 		// if there is no time left, emit a time's up signal
 		if (!this.time) return this.timeUp();

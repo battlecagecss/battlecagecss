@@ -29,17 +29,5 @@ io.on('connect', (socket) => {
 	});
 });
 
-// io.on('connection', (socket) => {
-// 	console.log('a user connected at socket');
 // 	socket.emit('welcome');
-// 	fetch('https://developer.mozilla.org/en-US/')
-// 		.then((x) => x.text())
-// 		.then((string) => string.replace(/\/static/g, 'https://developer.mozilla.org/static'))
-// 		.then((data) => {
-// 			// console.log(data);
-// 			return data;
-// 		})
-// 		.then((resp) => socket.emit('pageInfo', resp));
-// });
-
 module.exports = http;

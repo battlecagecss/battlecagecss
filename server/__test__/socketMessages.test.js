@@ -242,3 +242,54 @@ describe('NODE Class', () => {
 		expect(newNode.value).toBe('toastedSquash');
 	});
 });
+
+describe('TIMER Class', () => {
+	let roomEmitResponse = null;
+
+	const mockIO = {
+		to: (room) => {
+			return {
+				emit: (eventName, payload) => {
+					roomEmitResponse = { eventName, payload, room };
+				},
+				room
+			};
+		}
+	};
+
+	const mockSocket = {
+		id: 'test-id',
+		emit: (eventName, payload) => {
+			eventName, payload;
+		}
+	};
+
+	const roomName = 'test-room';
+	const testRoom = new Room(mockIO, testRoom);
+	const newTimer = new Timer(mockIO, testRoom);
+
+	it('should create a new Timer when constructed', () => {
+		expect(newTimer).toBeInstanceOf(Timer);
+		expect(newTimer.io).toBe(mockIO);
+		expect(newTimer.room).toBe(testRoom);
+		expect(newTimer.time).toBe(0);
+		expect(newTimer.cb).toEqual({});
+	});
+
+	it('should it set Countdown correctly', () => {
+		let cb = () => console.log('countdown');
+		newTimer.setCountdown(10, cb);
+		expect(newTimer.time).toBe(10);
+		expect(newTimer.cb).toBe(cb);
+	});
+
+	it('should countdown', () => {
+		// 'use strict';
+		jest.useFakeTimers();
+		let cb = () => console.log('countdown');
+		newTimer.setCountdown(10, cb);
+		newTimer.runCountdown();
+		console.log(newTimer.time);
+		expect(setTimeout).toHaveBeenCalledTimes(10);
+	});
+});
