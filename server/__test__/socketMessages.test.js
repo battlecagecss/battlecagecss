@@ -46,7 +46,7 @@ describe('ROOM Class', () => {
 		it('should create an empty timer when created', () => {
 			expect(newRoom.timer).toBeInstanceOf(Timer);
 		});
-		it('should go and get the html from the mozilla site', (done) => {
+		it('should go and get the html from the lla site', (done) => {
 			newRoom.html.then(() => {
 				expect(newRoom.html).toBeDefined();
 				expect(typeof newRoom.html).toBe('string');
