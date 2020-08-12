@@ -10,23 +10,26 @@ app.use(express.json());
 app.use(express.static('dist'));
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
+	res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.get('/room/:room', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
+	res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 io.on('connect', (socket) => {
+	let room = null;
 	// TODO: move the socket logic into a separate file
 	socket.on('joinRoom', (roomName) => {
 		roomName = roomName.length ? roomName : 'default';
-		socket.join(roomName, () => {
-			console.log('room name: ', roomName);
-			io.in(roomName).emit('joinedRoom', `${socket.id} joined ${roomName}`);
-			createPlayer(io, socket, roomName, {});
+		room = createPlayer(io, socket, roomName, {});
+		socket.on('updatePage', (data) => {
+			console.log('emitting new HTML to ', room.room);
+			socket.to(room.room).emit('newPage', data);
 		});
 	});
+
+	socket.on('disconnect', () => (room ? room.removePlayer(socket.id) : null));
 });
 
 io.on('connection', (socket) => {

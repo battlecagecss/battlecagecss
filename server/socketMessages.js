@@ -47,8 +47,9 @@ class Room {
 		return socket.emit('returnPlayerList', this.playerList);
 	}
 
-	addPlayer(socket, player) {
+	async addPlayer(socket, player) {
 		const newPlayer = new Player(socket, player.name, player.pictureURL);
+		await socket.join(this.room);
 		this.playerList.push(newPlayer);
 		this.updatePlayerlist();
 	}
@@ -59,7 +60,7 @@ class Room {
 	}
 
 	updatePlayerlist() {
-		this.io.to(this.room).emit('updatePlayerList', this.playerList);
+		this.io.to(this.room).binary(false).emit('updatePlayerList', this.playerList.map((player) => player.name));
 	}
 
 	submitVote(socketID, vote) {
@@ -119,12 +120,10 @@ class Timer {
 	updateTimer() {
 		this.io.to(this.room).emit('timer', { timeRemaining: this.time });
 	}
-
 	setCountdown(time, cb) {
 		this.time = time;
 		this.cb = cb;
 	}
-
 	runCountdown() {
 		// if there is no time left, emit a time's up signal
 		if (!this.time) return this.timeUp();
@@ -139,10 +138,12 @@ class Timer {
 	}
 }
 
-const createPlayer = (io, socket, room, player) => {
-	if (!rooms[room]) rooms[room] = new Room(io, room);
-	rooms[room].addPlayer(socket, player);
-	console.log('rooms:', rooms);
+const createPlayer = (io, socket, roomName, player) => {
+	if (!rooms[roomName]) rooms[roomName] = new Room(io, roomName);
+	rooms[roomName].addPlayer(socket, player);
+	// console.log(rooms);
+	// console.log(rooms[roomName]);
+	return rooms[roomName];
 };
 
 module.exports = { createPlayer, Player, Room, rooms, Timer, DOMNode };
