@@ -1,4 +1,11 @@
-const { createPlayer, Player, Room, DOMNode, rooms, Timer } = require('../socketMessages');
+const {
+	createPlayer,
+	Player,
+	Room,
+	DOMNode,
+	rooms,
+	Timer
+} = require('../socketMessages');
 
 describe('ROOM Class', () => {
 	let roomEmitResponse = null;
@@ -6,12 +13,20 @@ describe('ROOM Class', () => {
 		to: (room) => {
 			return {
 				emit: (eventName, payload) => {
-					roomEmitResponse = { eventName, payload, room };
+					roomEmitResponse = {
+						eventName,
+						payload,
+						room
+					};
 				},
 				binary: () => {
 					return {
 						emit: (eventName, payload) => {
-							roomEmitResponse = { eventName, payload, room };
+							roomEmitResponse = {
+								eventName,
+								payload,
+								room
+							};
 						}
 					};
 				},
@@ -24,7 +39,8 @@ describe('ROOM Class', () => {
 		id: 'test-id',
 		join: () => {},
 		emit: (eventName, payload) => {
-			eventName, payload;
+			eventName,
+			payload;
 		}
 	};
 	const roomName = 'test-room';
@@ -70,15 +86,71 @@ describe('ROOM Class', () => {
 
 			it('should an empty playerList on first call', () => {
 				const socketResponse = newRoom.getPlayers(mockSocket);
-				expect(socketMessageResponse).toEqual({ eventName: 'returnPlayerList', payload: [] });
+				expect(socketMessageResponse).toEqual({
+					eventName: 'returnPlayerList',
+					payload: []
+				});
 			});
 			it('should a player if called after player add', () => {
 				const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
 				newRoom.addPlayer(mockSocket, mockPlayer);
 				const socketResponse = newRoom.getPlayers(mockSocket);
-				expect(socketMessageResponse).toEqual({ eventName: 'returnPlayerList', payload: [ mockPlayer ] });
+				expect(socketMessageResponse).toEqual({
+					eventName: 'returnPlayerList',
+					payload: [mockPlayer]
+				});
 			});
 		});
+		describe('update HTML', () => {
+			// mock 
+			let roomEmitResponse = null;
+			const mockIO = {
+				to: (room) => {
+					return {
+						emit: (eventName, payload) => {
+							roomEmitResponse = {
+								eventName,
+								payload,
+								room
+							};
+						},
+						binary: () => {
+							return {
+								emit: (eventName, payload) => {
+									roomEmitResponse = {
+										eventName,
+										payload,
+										room
+									};
+								}
+							};
+						},
+						room
+					};
+				}
+			};
+			const mockName = 'test-room'
+			const mockRoom = new Room(mockIO, mockName)
+			const mockHTML = 'testing mock html'
+			// testing a method:
+			// first, call the method with a mocked input
+			mockRoom.updateHtml(mockHTML)
+
+			it('player\'s input html becomes the room\'s html', () => {
+				// then check to make sure it did what it's supposed to
+				expect(mockRoom.html).toBe(mockHTML)
+			})
+			it('updated html should be emitted to a single room', () => {
+				// roomEmitResponse
+				// check to make sure it emits the correct event name
+				expect(roomEmitResponse.eventName).toBe('newPage')
+				expect(roomEmitResponse.payload).toEqual({
+					html: mockHTML
+				})
+				// check to make sure it has the correct payload
+			})
+		})
+
 		describe('addPlayer', () => {
 			const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
 
@@ -87,7 +159,7 @@ describe('ROOM Class', () => {
 				expect(newRoom.playerList.length).toEqual(0);
 				newRoom.addPlayer(mockSocket, mockPlayer);
 				expect(newRoom.playerList.length).toEqual(1);
-				expect(newRoom.playerList).toEqual([ mockPlayer ]);
+				expect(newRoom.playerList).toEqual([mockPlayer]);
 			});
 			it('should add an additional player for each call', () => {
 				const newRoom = new Room(mockIO, roomName);
@@ -129,12 +201,20 @@ describe('ROOM Class', () => {
 				to: (room) => {
 					return {
 						emit: (eventName, payload) => {
-							roomEmitResponse = { eventName, payload, room };
+							roomEmitResponse = {
+								eventName,
+								payload,
+								room
+							};
 						},
 						binary: () => {
 							return {
 								emit: (eventName, payload) => {
-									roomEmitResponse = { eventName, payload, room };
+									roomEmitResponse = {
+										eventName,
+										payload,
+										room
+									};
 								}
 							};
 						},
@@ -147,7 +227,8 @@ describe('ROOM Class', () => {
 				id: 'test-id',
 				join: () => {},
 				emit: (eventName, payload) => {
-					eventName, payload;
+					eventName,
+					payload;
 				}
 			};
 
@@ -171,7 +252,7 @@ describe('ROOM Class', () => {
 			it('should be called from the addPlayer method', () => {
 				const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
 				newRoom.addPlayer(mockSocket, mockPlayer);
-				expect(roomEmitResponse.payload).toEqual([ mockPlayer.name ]);
+				expect(roomEmitResponse.payload).toEqual([mockPlayer.name]);
 			});
 			it('should be called from the removePlayer method', () => {
 				const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
@@ -186,12 +267,20 @@ describe('ROOM Class', () => {
 				to: (room) => {
 					return {
 						emit: (eventName, payload) => {
-							roomEmitResponse = { eventName, payload, room };
+							roomEmitResponse = {
+								eventName,
+								payload,
+								room
+							};
 						},
 						binary: () => {
 							return {
 								emit: (eventName, payload) => {
-									roomEmitResponse = { eventName, payload, room };
+									roomEmitResponse = {
+										eventName,
+										payload,
+										room
+									};
 								}
 							};
 						},
@@ -204,21 +293,24 @@ describe('ROOM Class', () => {
 				id: 'test-id-1',
 				join: () => {},
 				emit: (eventName, payload) => {
-					eventName, payload;
+					eventName,
+					payload;
 				}
 			};
 			const mockSocket2 = {
 				id: 'test-id-2',
 				join: () => {},
 				emit: (eventName, payload) => {
-					eventName, payload;
+					eventName,
+					payload;
 				}
 			};
 			const mockSocket3 = {
 				id: 'test-id-3',
 				join: () => {},
 				emit: (eventName, payload) => {
-					eventName, payload;
+					eventName,
+					payload;
 				}
 			};
 
@@ -244,7 +336,8 @@ describe('PLAYER Class', () => {
 		id: 'test-id',
 		join: () => {},
 		emit: (eventName, payload) => {
-			eventName, payload;
+			eventName,
+			payload;
 		}
 	};
 
@@ -281,19 +374,27 @@ describe('NODE Class', () => {
 	});
 });
 
-xdescribe('TIMER Class', () => {
+describe('TIMER Class', () => {
 	let roomEmitResponse = null;
 
 	const mockIO = {
 		to: (room) => {
 			return {
 				emit: (eventName, payload) => {
-					roomEmitResponse = { eventName, payload, room };
+					roomEmitResponse = {
+						eventName,
+						payload,
+						room
+					};
 				},
 				binary: () => {
 					return {
 						emit: (eventName, payload) => {
-							roomEmitResponse = { eventName, payload, room };
+							roomEmitResponse = {
+								eventName,
+								payload,
+								room
+							};
 						}
 					};
 				},
@@ -306,7 +407,8 @@ xdescribe('TIMER Class', () => {
 		id: 'test-id',
 		join: () => {},
 		emit: (eventName, payload) => {
-			eventName, payload;
+			eventName,
+			payload;
 		}
 	};
 
@@ -335,7 +437,7 @@ xdescribe('TIMER Class', () => {
 		let cb = () => console.log('countdown');
 		newTimer.setCountdown(10, cb);
 		newTimer.runCountdown();
-		console.log(newTimer.time);
+		jest.advanceTimersByTime(10001)
 		expect(setTimeout).toHaveBeenCalledTimes(10);
 	});
 });
