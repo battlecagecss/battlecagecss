@@ -23,6 +23,13 @@ Node {
     attributeValue: string
 }
 
+updatePage message - 
+front end - socket.emit('updatePage', {html: htmlString})
+          - socket.on('newPage', {html: htmlString}) 
+                (set as new html in dangerouslySetInnerHTML)
+
+back end - socket.on(updatePage, data => io.to(this.room).emit('newPage), data)
+
 - "timer" : {timeRemaining: number} update the timestamp on all pages
         updateTimer
         setCountdown
