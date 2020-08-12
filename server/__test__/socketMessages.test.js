@@ -1,11 +1,19 @@
 const { createPlayer, Player, Room, DOMNode, rooms, Timer } = require('../socketMessages');
 
 describe('ROOM Class', () => {
+	let roomEmitResponse = null;
 	const mockIO = {
 		to: (room) => {
 			return {
 				emit: (eventName, payload) => {
-					return { eventName, payload };
+					roomEmitResponse = { eventName, payload, room };
+				},
+				binary: () => {
+					return {
+						emit: (eventName, payload) => {
+							roomEmitResponse = { eventName, payload, room };
+						}
+					};
 				},
 				room
 			};
@@ -14,6 +22,7 @@ describe('ROOM Class', () => {
 
 	const mockSocket = {
 		id: 'test-id',
+		join: () => {},
 		emit: (eventName, payload) => {
 			eventName, payload;
 		}
@@ -37,6 +46,13 @@ describe('ROOM Class', () => {
 		it('should create an empty timer when created', () => {
 			expect(newRoom.timer).toBeInstanceOf(Timer);
 		});
+		it('should go and get the html from the mozilla site', (done) => {
+			newRoom.html.then(() => {
+				expect(newRoom.html).toBeDefined();
+				expect(typeof newRoom.html).toBe('string');
+				done();
+			});
+		});
 	});
 
 	describe('room methods', () => {
@@ -44,6 +60,7 @@ describe('ROOM Class', () => {
 			let socketMessageResponse = null;
 			const mockSocket = {
 				id: 'test-id',
+				join: () => {},
 				emit: (eventName, payload) =>
 					(socketMessageResponse = {
 						eventName,
@@ -114,6 +131,13 @@ describe('ROOM Class', () => {
 						emit: (eventName, payload) => {
 							roomEmitResponse = { eventName, payload, room };
 						},
+						binary: () => {
+							return {
+								emit: (eventName, payload) => {
+									roomEmitResponse = { eventName, payload, room };
+								}
+							};
+						},
 						room
 					};
 				}
@@ -121,6 +145,7 @@ describe('ROOM Class', () => {
 
 			const mockSocket = {
 				id: 'test-id',
+				join: () => {},
 				emit: (eventName, payload) => {
 					eventName, payload;
 				}
@@ -136,15 +161,17 @@ describe('ROOM Class', () => {
 				expect(roomEmitResponse.room).toEqual(roomName);
 			});
 			it('emit the correct event name "updatePlayerList"', () => {
+				newRoom.updatePlayerlist();
 				expect(roomEmitResponse.eventName).toEqual('updatePlayerList');
 			});
 			it('emit the correct payload', () => {
+				newRoom.updatePlayerlist();
 				expect(roomEmitResponse.payload).toEqual([]);
 			});
 			it('should be called from the addPlayer method', () => {
 				const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
 				newRoom.addPlayer(mockSocket, mockPlayer);
-				expect(roomEmitResponse.payload).toEqual([ mockPlayer ]);
+				expect(roomEmitResponse.payload).toEqual([ mockPlayer.name ]);
 			});
 			it('should be called from the removePlayer method', () => {
 				const mockPlayer = new Player(mockSocket, 'dave', 'dave.url');
@@ -153,13 +180,20 @@ describe('ROOM Class', () => {
 				expect(roomEmitResponse.payload).toEqual([]);
 			});
 		});
-		describe('submit vote', () => {
+		xdescribe('submit vote', () => {
 			let roomEmitResponse = null;
 			const mockIO = {
 				to: (room) => {
 					return {
 						emit: (eventName, payload) => {
 							roomEmitResponse = { eventName, payload, room };
+						},
+						binary: () => {
+							return {
+								emit: (eventName, payload) => {
+									roomEmitResponse = { eventName, payload, room };
+								}
+							};
 						},
 						room
 					};
@@ -168,18 +202,21 @@ describe('ROOM Class', () => {
 
 			const mockSocket1 = {
 				id: 'test-id-1',
+				join: () => {},
 				emit: (eventName, payload) => {
 					eventName, payload;
 				}
 			};
 			const mockSocket2 = {
 				id: 'test-id-2',
+				join: () => {},
 				emit: (eventName, payload) => {
 					eventName, payload;
 				}
 			};
 			const mockSocket3 = {
 				id: 'test-id-3',
+				join: () => {},
 				emit: (eventName, payload) => {
 					eventName, payload;
 				}
@@ -205,6 +242,7 @@ describe('ROOM Class', () => {
 describe('PLAYER Class', () => {
 	const mockSocket = {
 		id: 'test-id',
+		join: () => {},
 		emit: (eventName, payload) => {
 			eventName, payload;
 		}
@@ -240,5 +278,64 @@ describe('NODE Class', () => {
 		expect(newNode.nodeID).toBe('shibas');
 		expect(newNode.attribute).toBe('button');
 		expect(newNode.value).toBe('toastedSquash');
+	});
+});
+
+xdescribe('TIMER Class', () => {
+	let roomEmitResponse = null;
+
+	const mockIO = {
+		to: (room) => {
+			return {
+				emit: (eventName, payload) => {
+					roomEmitResponse = { eventName, payload, room };
+				},
+				binary: () => {
+					return {
+						emit: (eventName, payload) => {
+							roomEmitResponse = { eventName, payload, room };
+						}
+					};
+				},
+				room
+			};
+		}
+	};
+
+	const mockSocket = {
+		id: 'test-id',
+		join: () => {},
+		emit: (eventName, payload) => {
+			eventName, payload;
+		}
+	};
+
+	const roomName = 'test-room';
+	const testRoom = new Room(mockIO, testRoom);
+	const newTimer = new Timer(mockIO, testRoom);
+
+	it('should create a new Timer when constructed', () => {
+		expect(newTimer).toBeInstanceOf(Timer);
+		expect(newTimer.io).toBe(mockIO);
+		expect(newTimer.room).toBe(testRoom);
+		expect(newTimer.time).toBe(0);
+		expect(newTimer.cb).toEqual({});
+	});
+
+	it('should it set Countdown correctly', () => {
+		let cb = () => console.log('countdown');
+		newTimer.setCountdown(10, cb);
+		expect(newTimer.time).toBe(10);
+		expect(newTimer.cb).toBe(cb);
+	});
+
+	it('should countdown', () => {
+		// 'use strict';
+		jest.useFakeTimers();
+		let cb = () => console.log('countdown');
+		newTimer.setCountdown(10, cb);
+		newTimer.runCountdown();
+		console.log(newTimer.time);
+		expect(setTimeout).toHaveBeenCalledTimes(10);
 	});
 });
