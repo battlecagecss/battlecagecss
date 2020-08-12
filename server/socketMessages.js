@@ -1,5 +1,6 @@
 // Socket.IO messages
 
+const fetch = require('node-fetch');
 const rooms = {};
 
 class Player {
@@ -28,6 +29,7 @@ class Room {
 		this.io = io;
 		this.room = room;
 		this.timer = new Timer(io, room);
+		this.html = this.getHTML();
 		this.node = null;
 		this.cssAttr = null;
 		this.Player1 = {
@@ -47,9 +49,9 @@ class Room {
 		return socket.emit('returnPlayerList', this.playerList);
 	}
 
-	async addPlayer(socket, player) {
+	addPlayer(socket, player) {
 		const newPlayer = new Player(socket, player.name, player.pictureURL);
-		await socket.join(this.room);
+		socket.join(this.room);
 		this.playerList.push(newPlayer);
 		this.updatePlayerlist();
 	}
@@ -107,6 +109,25 @@ class Room {
 		const Player2 = this.Player2;
 		this.io.to(this.room).emit('playerCSSChanges', { Player1, Player2 });
 	}
+
+	getHTML() {
+		// fetch call goes here
+		return fetch('https://developer.mozilla.org/en-US/')
+			.then((x) => x.text())
+			.then((string) => string.replace(/\/static/g, 'https://developer.mozilla.org/static'))
+			.then((resp) => {
+				this.updateHtml(resp);
+			});
+	}
+
+	updateHtml(html) {
+		this.html = html;
+		this.sendHtml();
+	}
+
+	sendHtml() {
+		this.io.to(this.room).emit('newPage', { html: this.html });
+	}
 }
 
 class Timer {
@@ -141,8 +162,7 @@ class Timer {
 const createPlayer = (io, socket, roomName, player) => {
 	if (!rooms[roomName]) rooms[roomName] = new Room(io, roomName);
 	rooms[roomName].addPlayer(socket, player);
-	// console.log(rooms);
-	// console.log(rooms[roomName]);
+	rooms[roomName].sendHtml();
 	return rooms[roomName];
 };
 
