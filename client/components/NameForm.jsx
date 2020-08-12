@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { selectValue } from "../reducers/nodeReducer";
 
 class NameForm extends React.Component {
   constructor(props) {
@@ -9,20 +11,31 @@ class NameForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // should pick a value and submit it to the redux store
+
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
+    this.props.submitValue(this.state.value);
     event.preventDefault();
+    // should take the attribute, value and node
+    const { node, attribute } = this.props;
+    // modify the node
+    node.style[attribute] = this.state.value;
+    // submit the new HTML to the backend via socket
+    // alert("A name was submitted: " + this.state.value);
+    const newHTML = document.getElementById("mainBox").innerHTML;
+    // setHTML(newHTML);
+    this.props.socket.emit("updatePage", { html: newHTML });
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          CSS Property: 
+          {this.props.node && this.props.node.className} Property:
           <input
             type="text"
             value={this.state.value}
@@ -35,4 +48,15 @@ class NameForm extends React.Component {
   }
 }
 
-export default NameForm;
+const mapStateToProps = (state) => ({
+  node: state.node.node,
+  attribute: state.node.attribute,
+  value: state.node.value,
+  socket: state.socket.socket,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitValue: (value) => dispatch(selectValue(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NameForm);

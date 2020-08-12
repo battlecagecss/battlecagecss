@@ -7,7 +7,7 @@ import DisplayContainer from "./DisplayContainer.jsx";
 import { addVote, deleteVote } from "../actions/actions.js";
 
 const mapStateToProps = (state) => ({
-  //
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -37,14 +37,14 @@ class MainContainer extends Component {
         <div className="outerBox">
           <h1 id="header">CSS CAGEMATCH</h1>
           <DisplayContainer />
-          <Menu style={{color: "red"}}/>
-          <NameForm style={{color: "red"}}/>
+          <Menu />
+          <NameForm />
         </div>
       </div>
     );
   }
 }
 
-const Wrapper = connect(mapStateToProps, mapDispatchToProps)(MainContainer);
+// const Wrapper = connect(mapStateToProps, mapDispatchToProps)(MainContainer);
 
-export default Wrapper;
+export default connect(null, mapDispatchToProps)(MainContainer);
