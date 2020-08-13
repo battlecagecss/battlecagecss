@@ -29,6 +29,7 @@ class NameForm extends React.Component {
     const newHTML = document.getElementById("mainBox").innerHTML;
     // setHTML(newHTML);
     this.props.socket.emit("updatePage", { html: newHTML });
+    this.setState({value: ''})
   }
 
   render() {

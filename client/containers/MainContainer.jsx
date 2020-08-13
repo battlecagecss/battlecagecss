@@ -34,11 +34,14 @@ class MainContainer extends Component {
   render() {
     return (
       <div className="container">
-        <div className="outerBox">
-          <h1 id="header">CSS CAGEMATCH</h1>
+        <div className="outerBox" style={{display: 'flex', flexDirection: 'column', justifyContent: 'stretch', flexBasis: 'fill', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+          <h1 id="header">BattleCage CSS</h1>
+
           <DisplayContainer />
+          <div style={{ backgroundColor: '#A5C8E4',paddingTop: '2rem',display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', flexGrow: '2'}}>
           <Menu />
           <NameForm />
+          </div>
         </div>
       </div>
     );

@@ -15,7 +15,7 @@ function SimpleMenu(props) {
 
   const handleClose = (attribute) => {
     console.log("closed");
-    props.selectAttribute(attribute);
+    if (typeof attribute === 'string')    props.selectAttribute(attribute);
     setAnchorEl(null);
   };
 
@@ -37,7 +37,11 @@ function SimpleMenu(props) {
           onClose={handleClose}
         >
           <MenuItem onClick={() => handleClose("color")}>Color</MenuItem>
+          <MenuItem onClick={() => handleClose("background-color")}>Background Color</MenuItem>
+          <MenuItem onClick={() => handleClose("font-size")}>Font Size</MenuItem>
           <MenuItem onClick={() => handleClose("height")}>Height</MenuItem>
+          <MenuItem onClick={() => handleClose("display")}>Display</MenuItem>
+          <MenuItem onClick={() => handleClose("opacity")}>Opacity</MenuItem>
           <MenuItem onClick={() => handleClose("alignment")}>
             Alignment
           </MenuItem>

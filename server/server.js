@@ -11,13 +11,13 @@ const {
 app.use(express.json());
 app.use(express.static('dist'));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
 
 app.get('/room/:room', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
+      app.get('*', (req, res) => {
+        res.redirect("/room/default");
+      });
 
 io.on('connect', (socket) => {
   let room = null;
