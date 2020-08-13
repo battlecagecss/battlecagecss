@@ -1,4 +1,21 @@
 #header {
-  background-color: aqua;
+  background-color: #A5C8E4;
   text-align: center;
+}
+
+#footer {
+  border-style: solid;
+  background-color: #A5C8E4;
+}
+
+/* #simple-menu{
+  background-color: purple;
+
+} */
+
+.outerbox {
+  box-shadow: 30px 30px 38px 30px #888888;
+  }
+#mainBox{
+  box-shadow: 30px 30px 38px 30px #888888;  
 }

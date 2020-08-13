@@ -14,7 +14,7 @@ class DisplayContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <MainDisplay />
       </div>
     );

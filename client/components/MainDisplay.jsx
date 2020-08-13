@@ -24,7 +24,7 @@ const Display = (props) => {
       console.log("got new html");
       setHTML(html.html);
     });
-    let room = window.location.pathname.split("/")[2];
+    let room = window.location.pathname.split("/")[2] || 'default'
     socket.emit("joinRoom", room);
     socket.on("updatePlayerList", console.log);
     console.log("recieved html");
@@ -50,8 +50,9 @@ const Display = (props) => {
   };
 
   return (
+    
     <div
-      style={{ maxHeight: "80vh", overflowY: "scroll" }}
+      style={{ maxHeight: "85vh", overflowY: "scroll", boxShadow: '2px 2px 2px 2px #888888' }}
       id="mainBox"
       onClick={handleClick}
       dangerouslySetInnerHTML={{ __html: html }}
